@@ -159,23 +159,23 @@ select {
 
 <!-- PAGINA 1 -->
 <div id="firstPage" class="page active">
-    <div class="top-text">Archivio digitale recuperato • accesso parziale</div>
+    <div class="top-text">ARCHIVIO CENTRALE • UNITÀ COLD CASE • ACCESSO CONSULTAZIONE LIMITATO</div>
 
     <div class="article-box">
         <img src="img/articolo76.png" alt="Articolo 1976" />
     </div>
 
     <div class="button-area">
-        <button id="proseguiBtn">Continua</button>
+        <button id="proseguiBtn">Accedi al Fascicolo</button>
     </div>
 </div>
 
 <!-- PAGINA 2 -->
 <div id="secondPage" class="page">
-    <div class="archive-title">Report Indagine</div>
-    <div class="archive-subtitle">ricostruzione dell’evento</div>
+    <div class="archive-title">Rapporto Investigativo</div>
+    <div class="archive-subtitle">compilazione dati mancanti del caso 76-08-LS</div>
 
-    <label>Chi</label>
+    <label>Soggetto coinvolto</label>
     <select id="who" onchange="saveState()">
         <option value="">-- scegli --</option>
         <option>Il parroco</option>
@@ -185,7 +185,7 @@ select {
         <option>Un testimone</option>
     </select>
 
-    <label>Cosa</label>
+    <label>Natura dell’evento</label>
     <select id="what" onchange="saveState()">
         <option value="">-- scegli --</option>
         <option>Un crollo accidentale</option>
@@ -195,7 +195,7 @@ select {
         <option>Un errore durante i lavori</option>
     </select>
 
-    <label>Dove</label>
+    <label>Luogo del fatto</label>
     <select id="where" onchange="saveState()">
         <option value="">-- scegli --</option>
         <option>Sagrestia</option>
@@ -205,17 +205,17 @@ select {
         <option>Archivio della chiesa</option>
     </select>
 
-    <label>Quando</label>
+    <label>Data e orario</label>
     <select id="when" onchange="saveState()">
         <option value="">-- scegli --</option>
         <option>Primavera 1975 - ore 18:00</option>
-        <option>Estate 1976 - ore 22:30</option>
+        <option>2 agosto 1976 - ore 22:30</option>
         <option>Inverno 1974 - ore 03:00</option>
         <option>Autunno 1977 - ore 11:15</option>
         <option>Estate 1976 - ore 07:45</option>
     </select>
 
-    <label>Perché</label>
+    <label>Possibile movente</label>
     <select id="why" onchange="saveState()">
         <option value="">-- scegli --</option>
         <option>Paura delle conseguenze</option>
@@ -230,12 +230,16 @@ select {
 
 <!-- PAGINA 3 -->
 <div id="thirdPage" class="page">
-    <div class="archive-title">Archivio moderno</div>
+    <div class="archive-title">Rapporto Riservato — Desecretato 2026</div>
 
-    <div id="lockedMsg" class="lock-msg">Articolo non ancora disponibile</div>
+    <div id="lockedMsg" class="lock-msg">
+<h2>ACCESSO NEGATO</h2>
+<p>Dati investigativi incompleti.</p>
+<p>Compilare il rapporto investigativo per procedere con la desecretazione del fascicolo.</p>
+</div>
 
     <div id="unlockedContent" style="display:none;">
-        <img src="https://via.placeholder.com/900x400.png?text=Articolo+Moderno" />
+        <img src="img/report26.png" alt="Rapporto riservato desecretato" />
     </div>
 </div>
 
@@ -247,7 +251,7 @@ const correct = {
     who: "Il capocantiere",
     what: "Insabbiamento di un incidente",
     where: "Seminterrato della parrocchia",
-    when: "Estate 1976 - ore 22:30",
+    when: "2 agosto 1976 - ore 22:30",
     why: "Paura delle conseguenze"
 };
 
@@ -300,9 +304,9 @@ navBar.style.justifyContent = 'center';
 navBar.style.gap = '10px';
 
 navBar.innerHTML = `
-<button onclick="showPage('firstPage')">Articolo 1976</button>
-<button onclick="showPage('secondPage')">Report Indagine</button>
-<button onclick="showPage('thirdPage')">Articolo 2026</button>
+<button onclick="showPage('firstPage')">Documento Storico</button>
+<button onclick="showPage('secondPage')">Rapporto Investigativo</button>
+<button onclick="showPage('thirdPage')">Rapporto Riservato</button>
 `;
 
 document.querySelector('.container').prepend(navBar);
