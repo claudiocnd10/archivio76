@@ -211,7 +211,7 @@ select {
         <div class="top-text">ARCHIVIO CENTRALE</div>
         <h1 style="font-size:52px; color:#d8ccb0; letter-spacing:6px; margin-bottom:20px;">ARCHIVIO INVESTIGATIVO</h1>
         <p style="color:#8c826f; margin-bottom:50px; text-transform:uppercase; letter-spacing:3px;">Accesso archivio digitale riservato</p>
-        <button onclick="enterArchive()">Caso 76-08-LS</button>
+        <button id="enterArchiveBtn">Caso 76-08-LS</button>
     </div>
 </div>
 
@@ -314,36 +314,17 @@ const correct = {
 };
 
 function showPage(page, btn = null) {
-    // nasconde tutte le pagine
-    document.querySelectorAll('.page').forEach(p => {
-        p.classList.remove('active');
-    });
-
-    // mostra quella richiesta
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     const target = document.getElementById(page);
-    if (target) {
-        target.classList.add('active');
-    }
-
-    // aggiorna navbar
-    document.querySelectorAll('.nav-btn').forEach(b => {
-        b.classList.remove('active-nav');
-    });
-
-    if (btn) {
-        btn.classList.add('active-nav');
-    }
+    if (target) target.classList.add('active');
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active-nav'));
+    if (btn) btn.classList.add('active-nav');
 }
 
 function enterArchive() {
-    const landing = document.getElementById('landingPage');
-    const archive = document.getElementById('archiveContainer');
-
-    if (landing) landing.style.display = 'none';
-    if (archive) archive.style.display = 'block';
-
-    const firstBtn = document.querySelector('.nav-btn');
-    showPage('firstPage', firstBtn);
+    document.getElementById('landingPage').style.display = 'none';
+    document.getElementById('archiveContainer').style.display = 'block';
+    showPage('firstPage', document.querySelector('.nav-btn'));
 }
 
 function saveState() {
@@ -354,35 +335,29 @@ function saveState() {
         when: document.getElementById('when').value,
         why: document.getElementById('why').value
     };
-
     localStorage.setItem('game5w', JSON.stringify(state));
     checkUnlock();
 }
 
 function loadState() {
     const saved = JSON.parse(localStorage.getItem('game5w') || '{}');
-
     Object.keys(saved).forEach(k => {
         const el = document.getElementById(k);
         if (el) el.value = saved[k];
     });
-
     checkUnlock();
 }
 
 function checkUnlock() {
     const state = JSON.parse(localStorage.getItem('game5w') || '{}');
-
     const unlocked = Object.keys(correct).every(k => state[k] === correct[k]);
-
     if (unlocked) {
         document.getElementById('lockedMsg').style.display = 'none';
         document.getElementById('unlockedContent').style.display = 'block';
     }
 }
 
-// navigation libera
-
+// Navbar dinamica
 const navBar = document.createElement('div');
 navBar.style.marginBottom = '20px';
 navBar.style.display = 'flex';
@@ -390,25 +365,18 @@ navBar.style.flexWrap = 'wrap';
 navBar.style.justifyContent = 'center';
 navBar.style.gap = '10px';
 navBar.classList.add('nav-bar');
-
 navBar.innerHTML = `
-<button class="nav-btn active-nav" onclick="showPage('firstPage', this)">Documento Storico</button>
-<button class="nav-btn" onclick="showPage('secondPage', this)">Rapporto Investigativo</button>
-<button class="nav-btn" onclick="showPage('thirdPage', this)">Rapporto Riservato</button>
+    <button class="nav-btn active-nav" onclick="showPage('firstPage', this)">Documento Storico</button>
+    <button class="nav-btn" onclick="showPage('secondPage', this)">Rapporto Investigativo</button>
+    <button class="nav-btn" onclick="showPage('thirdPage', this)">Rapporto Riservato</button>
 `;
+document.getElementById('archiveContainer').prepend(navBar);
 
-document.querySelector('.container').prepend(navBar);
-
-
-function enterArchive() {
-    document.getElementById('landingPage').style.display = 'none';
-    document.getElementById('archiveContainer').style.display = 'block';
-    showPage('firstPage', document.querySelector('.nav-btn'));
-}
+// Init
+window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('enterArchiveBtn').addEventListener('click', enterArchive);
+    loadState();
 });
-
-loadState();
-checkUnlock();
 
 </script>
 
