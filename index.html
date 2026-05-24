@@ -7,6 +7,7 @@
 
 <style>
 body {
+    overflow-x: hidden;
     margin: 0;
     background: #0d0d0d;
     color: #e7dcc3;
@@ -144,6 +145,56 @@ select {
     margin-top: 20px;
 }
 
+.nav-bar {
+    width:100%;
+    max-width:1000px;
+    margin:0 auto 20px auto;
+}
+
+.nav-btn {
+    flex:1;
+    min-width:180px;
+}
+
+.active-nav {
+    background:#3a3328 !important;
+    border-color:#8d7c61 !important;
+    box-shadow:0 0 10px rgba(216,204,176,0.3);
+}
+
+@media (max-width: 700px) {
+    body {
+        padding:10px;
+    }
+
+    .archive-title {
+        font-size:28px;
+    }
+
+    #secondPage,
+    #thirdPage {
+        padding:20px;
+    }
+
+    .nav-bar {
+        display:flex;
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .nav-btn {
+        width:100%;
+        min-width:unset;
+        font-size:12px;
+        padding:14px;
+    }
+
+    .top-text {
+        font-size:10px;
+        letter-spacing:2px;
+    }
+}
+
 .lock-msg {
     opacity: 0.5;
     text-align: center;
@@ -155,7 +206,16 @@ select {
 
 <body>
 
-<div class="container">
+<div id="landingPage" class="container active">
+    <div style="text-align:center; padding:80px 20px;">
+        <div class="top-text">ARCHIVIO CENTRALE</div>
+        <h1 style="font-size:52px; color:#d8ccb0; letter-spacing:6px; margin-bottom:20px;">ARCHIVIO INVESTIGATIVO</h1>
+        <p style="color:#8c826f; margin-bottom:50px; text-transform:uppercase; letter-spacing:3px;">Accesso archivio digitale riservato</p>
+        <button onclick="enterArchive()">Caso 76-08-LS</button>
+    </div>
+</div>
+
+<div class="container" id="archiveContainer" style="display:none;">
 
 <!-- PAGINA 1 -->
 <div id="firstPage" class="page active">
@@ -165,9 +225,7 @@ select {
         <img src="img/articolo76.png" alt="Articolo 1976" />
     </div>
 
-    <div class="button-area">
-        <button id="proseguiBtn">Accedi al Fascicolo</button>
-    </div>
+    
 </div>
 
 <!-- PAGINA 2 -->
@@ -255,9 +313,37 @@ const correct = {
     why: "Paura delle conseguenze"
 };
 
-function showPage(page) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById(page).classList.add('active');
+function showPage(page, btn = null) {
+    // nasconde tutte le pagine
+    document.querySelectorAll('.page').forEach(p => {
+        p.classList.remove('active');
+    });
+
+    // mostra quella richiesta
+    const target = document.getElementById(page);
+    if (target) {
+        target.classList.add('active');
+    }
+
+    // aggiorna navbar
+    document.querySelectorAll('.nav-btn').forEach(b => {
+        b.classList.remove('active-nav');
+    });
+
+    if (btn) {
+        btn.classList.add('active-nav');
+    }
+}
+
+function enterArchive() {
+    const landing = document.getElementById('landingPage');
+    const archive = document.getElementById('archiveContainer');
+
+    if (landing) landing.style.display = 'none';
+    if (archive) archive.style.display = 'block';
+
+    const firstBtn = document.querySelector('.nav-btn');
+    showPage('firstPage', firstBtn);
 }
 
 function saveState() {
@@ -300,20 +386,25 @@ function checkUnlock() {
 const navBar = document.createElement('div');
 navBar.style.marginBottom = '20px';
 navBar.style.display = 'flex';
+navBar.style.flexWrap = 'wrap';
 navBar.style.justifyContent = 'center';
 navBar.style.gap = '10px';
+navBar.classList.add('nav-bar');
 
 navBar.innerHTML = `
-<button onclick="showPage('firstPage')">Documento Storico</button>
-<button onclick="showPage('secondPage')">Rapporto Investigativo</button>
-<button onclick="showPage('thirdPage')">Rapporto Riservato</button>
+<button class="nav-btn active-nav" onclick="showPage('firstPage', this)">Documento Storico</button>
+<button class="nav-btn" onclick="showPage('secondPage', this)">Rapporto Investigativo</button>
+<button class="nav-btn" onclick="showPage('thirdPage', this)">Rapporto Riservato</button>
 `;
 
 document.querySelector('.container').prepend(navBar);
 
 
-document.getElementById('proseguiBtn').addEventListener('click', () => {
-    showPage('secondPage');
+function enterArchive() {
+    document.getElementById('landingPage').style.display = 'none';
+    document.getElementById('archiveContainer').style.display = 'block';
+    showPage('firstPage', document.querySelector('.nav-btn'));
+}
 });
 
 loadState();
