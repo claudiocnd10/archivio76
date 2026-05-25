@@ -311,12 +311,11 @@ select {
         Reperto correlato
     </button>
 
-	<button id="finalBtn"
-			class="page-btn bottom-right disabled-btn"
-			onclick="showPage('thirdPage')"
-			style="display:none;">
-		Esito rapporto
-	</button>
+    <button id="finalBtn"
+            class="page-btn bottom-right disabled-btn"
+            onclick="showPage('thirdPage')">
+        Esito rapporto
+    </button>
 
 </div>
 
@@ -358,6 +357,11 @@ function showPage(page) {
 
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById(page).classList.add('active');
+
+    // 🔥 ogni volta che entri nella pagina 2 ricalcoli lo stato
+    if (page === 'secondPage') {
+        checkUnlock();
+    }
 }
 
 function enterArchive() {
@@ -369,14 +373,15 @@ function enterArchive() {
 function saveState() {
 
     const state = {
-        who: who.value,
-        what: what.value,
-        where: where.value,
-        when: when.value,
-        why: why.value
+        who: document.getElementById('who').value,
+        what: document.getElementById('what').value,
+        where: document.getElementById('where').value,
+        when: document.getElementById('when').value,
+        why: document.getElementById('why').value
     };
 
     localStorage.setItem('game5w', JSON.stringify(state));
+
     checkUnlock();
 }
 
@@ -384,18 +389,27 @@ function checkUnlock() {
 
     const state = JSON.parse(localStorage.getItem('game5w') || '{}');
 
-    const unlocked = Object.keys(correct).every(
-        k => state[k] === correct[k]
-    );
+    const unlocked = Object.keys(correct).every(k => {
+		const a = (state[k] || "").trim().toLowerCase();
+		const b = correct[k].trim().toLowerCase();
+		return a === b;
+	});
 
     const btn = document.getElementById('finalBtn');
 
-    const btn = document.getElementById('finalBtn');
+	if (btn) {
 
-	if (unlocked) {
-		btn.style.display = 'block';
-	} else {
-		btn.style.display = 'none';
+		if (unlocked) {
+
+			btn.style.display = 'block';
+			btn.classList.remove('disabled-btn');
+
+		} else {
+
+			btn.style.display = 'none';
+			btn.classList.add('disabled-btn');
+
+		}
 	}
 
     document.getElementById('lockedMsg').style.display = unlocked ? 'none' : 'block';
