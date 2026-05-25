@@ -188,9 +188,16 @@ select {
 
     .page-btn {
         position: static;
-        display: inline-block;
-        margin: 10px;
+        margin: 0;
         width: auto;
+    }
+
+    /* 🔥 questa è la parte importante */
+    #secondPage {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        flex-wrap: wrap;
     }
 }
 
