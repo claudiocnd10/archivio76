@@ -186,36 +186,25 @@ select {
         letter-spacing: 2px;
     }
 
-    /* 🔥 FIX PAGINA 1 + BASE */
-    .page-btn {
+    /* 🔥 PAGINA 1: resta absolute */
+    #firstPage .page-btn {
         position: absolute;
         bottom: 25px;
+        right: 15px;
+    }
 
-        padding: 14px 10px;
-        font-size: 12px;
-        letter-spacing: 2px;
-        line-height: 1.2;
-
+    /* 🔥 PAGINA 2: NO absolute, layout normale */
+    #secondPage .page-btn {
+        position: static;
+        width: 48%;
+        display: inline-block;
+        margin-top: 20px;
         white-space: normal;
         word-break: break-word;
+    }
+
+    #secondPage {
         text-align: center;
-
-        max-width: none;
-    }
-
-    /* 🔥 SOLO PAGINA 2: metà e metà */
-    #secondPage .page-btn {
-        width: calc(50% - 20px);
-    }
-
-    #secondPage .bottom-left {
-        left: 15px;
-        right: auto;
-    }
-
-    #secondPage .bottom-right {
-        right: 15px;
-        left: auto;
     }
 }
 
