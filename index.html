@@ -186,18 +186,18 @@ select {
         letter-spacing: 2px;
     }
 
+    /* 🔥 FIX fondamentale: niente absolute su mobile */
     .page-btn {
-        position: absolute;
-        bottom: 25px;
-        width: auto;
+        position: static;
+        display: block;
+        margin: 15px auto 0 auto;
+        width: fit-content;
     }
 
-    .bottom-left {
-        left: 15px;
-    }
-
+    .bottom-left,
     .bottom-right {
-        right: 15px;
+        left: auto;
+        right: auto;
     }
 }
 
