@@ -188,20 +188,26 @@ select {
 
     /* 🔥 FIX VERO */
     .page-btn {
-        position: absolute;
-        bottom: 25px;
-        min-width: 0;
-    }
+		position: absolute;
+		bottom: 25px;
+
+		max-width: 220px;      /* limite massimo */
+		width: auto;           /* si adatta al contenuto */
+		
+		white-space: normal;   /* vai a capo */
+		text-align: center;
+		padding: 16px 20px;
+		line-height: 1.2;
+	}
 
     .bottom-left {
-        left: 15px;
-        right: auto;
-    }
+    left: 25px;
+	}
 
-    .bottom-right {
-        right: 15px;
-        left: auto;
-    }
+	.bottom-right {
+		right: 25px;
+	}
+	
 }
 
 </style>
