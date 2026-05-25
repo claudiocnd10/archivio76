@@ -108,7 +108,7 @@ button:hover {
 .nav-bar {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: stretch;
     gap: 0;
     margin-top: 30px;
     width: 100%;
@@ -118,14 +118,14 @@ button:hover {
 .nav-bar .nav-slot {
     flex: 0 0 50%;
     width: 50%;
+    display: flex;
 }
 
-/* Pulsante dentro lo slot occupa tutta la larghezza dello slot */
+/* Pulsante dentro lo slot occupa tutta la larghezza e altezza dello slot */
 .nav-bar .nav-slot button {
     width: 100%;
     padding: 16px 10px;
     text-align: center;
-    min-height: 60px;
 }
 
 /* Slot vuoto: placeholder invisibile per mantenere l'allineamento */
