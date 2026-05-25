@@ -42,6 +42,7 @@ body {
     background: #161616;
     border: 1px solid #333;
     padding: 40px;
+    padding-bottom: 20px;
     margin-top: 20px;
     min-height: 60vh;
 }
@@ -97,31 +98,44 @@ button {
     letter-spacing: 4px;
     cursor: pointer;
     transition: 0.3s;
+    box-sizing: border-box;
 }
 
 button:hover {
     background: #262626;
 }
 
-/* BOTTONI NAV PAGINA */
+/* BARRA NAVIGAZIONE — sempre flex, sempre affiancata */
 
-.page-btn {
-    position: absolute;
-    bottom: 25px;
-    min-width: 220px;
+.nav-bar {
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+    margin-top: 30px;
+    width: 100%;
 }
 
-.bottom-right {
-    right: 25px;
+/* Ogni slot occupa sempre il 50% */
+.nav-bar .nav-slot {
+    flex: 0 0 50%;
+    width: 50%;
 }
 
-.bottom-left {
-    left: 25px;
+/* Pulsante dentro lo slot occupa tutta la larghezza dello slot */
+.nav-bar .nav-slot button {
+    width: 100%;
+    padding: 16px 10px;
+    text-align: center;
 }
 
+/* Slot vuoto: placeholder invisibile per mantenere l'allineamento */
+.nav-bar .nav-slot.empty {
+    /* niente, solo occupa spazio */
+}
+
+/* Pulsante disabilitato: occupa spazio ma è invisibile */
 .disabled-btn {
-    opacity: 0.3;
-    cursor: not-allowed;
+    visibility: hidden;
     pointer-events: none;
 }
 
@@ -163,14 +177,6 @@ select {
     display: block;
 }
 
-/* LANDING */
-
-.container {
-    width: 100%;
-    max-width: 1000px;
-    text-align: center;
-}
-
 /* RESPONSIVE */
 
 @media (max-width: 700px) {
@@ -180,32 +186,16 @@ select {
     }
 
     button {
-        width: auto;
         font-size: 12px;
-        padding: 12px 20px;
         letter-spacing: 2px;
     }
 
-    /* 🔥 PAGINA 1: resta absolute */
-    #firstPage .page-btn {
-        position: absolute;
-        bottom: 25px;
-        right: 15px;
+    #secondPage,
+    #thirdPage {
+        padding: 20px;
+        padding-bottom: 15px;
     }
 
-    /* 🔥 PAGINA 2: NO absolute, layout normale */
-    #secondPage .page-btn {
-        position: static;
-        width: 48%;
-        display: inline-block;
-        margin-top: 20px;
-        white-space: normal;
-        word-break: break-word;
-    }
-
-    #secondPage {
-        text-align: center;
-    }
 }
 
 </style>
@@ -251,10 +241,13 @@ select {
         <img src="img/articolo76.png" alt="Articolo 1976">
     </div>
 
-    <button class="page-btn bottom-right"
-            onclick="showPage('secondPage')">
-        Rapporto investigativo
-    </button>
+    <!-- Pagina 1: solo pulsante a destra → slot sinistro vuoto -->
+    <div class="nav-bar">
+        <div class="nav-slot empty"></div>
+        <div class="nav-slot">
+            <button onclick="showPage('secondPage')">Rapporto investigativo</button>
+        </div>
+    </div>
 
 </div>
 
@@ -280,7 +273,7 @@ select {
         <option>Un testimone</option>
     </select>
 
-    <label>Natura dell’evento</label>
+    <label>Natura dell'evento</label>
     <select id="what" onchange="saveState()">
         <option value="">-- scegli --</option>
         <option>Un crollo accidentale</option>
@@ -320,16 +313,19 @@ select {
         <option>Proteggere la parrocchia</option>
     </select>
 
-    <button class="page-btn bottom-left"
-            onclick="showPage('firstPage')">
-        Reperto correlato
-    </button>
-
-    <button id="finalBtn"
-            class="page-btn bottom-right disabled-btn"
-            onclick="showPage('thirdPage')">
-        Esito rapporto
-    </button>
+    <!-- Pagina 2: due pulsanti affiancati -->
+    <div class="nav-bar">
+        <div class="nav-slot">
+            <button onclick="showPage('firstPage')">Reperto correlato</button>
+        </div>
+        <div class="nav-slot">
+            <button id="finalBtn"
+                    class="disabled-btn"
+                    onclick="showPage('thirdPage')">
+                Esito rapporto
+            </button>
+        </div>
+    </div>
 
 </div>
 
@@ -368,11 +364,9 @@ const correct = {
 };
 
 function showPage(page) {
-
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById(page).classList.add('active');
 
-    // 🔥 ogni volta che entri nella pagina 2 ricalcoli lo stato
     if (page === 'secondPage') {
         checkUnlock();
     }
@@ -404,27 +398,20 @@ function checkUnlock() {
     const state = JSON.parse(localStorage.getItem('game5w') || '{}');
 
     const unlocked = Object.keys(correct).every(k => {
-		const a = (state[k] || "").trim().toLowerCase();
-		const b = correct[k].trim().toLowerCase();
-		return a === b;
-	});
+        const a = (state[k] || "").trim().toLowerCase();
+        const b = correct[k].trim().toLowerCase();
+        return a === b;
+    });
 
     const btn = document.getElementById('finalBtn');
 
-	if (btn) {
-
-		if (unlocked) {
-
-			btn.style.display = 'block';
-			btn.classList.remove('disabled-btn');
-
-		} else {
-
-			btn.style.display = 'none';
-			btn.classList.add('disabled-btn');
-
-		}
-	}
+    if (btn) {
+        if (unlocked) {
+            btn.classList.remove('disabled-btn');
+        } else {
+            btn.classList.add('disabled-btn');
+        }
+    }
 
     document.getElementById('lockedMsg').style.display = unlocked ? 'none' : 'block';
     document.getElementById('unlockedContent').style.display = unlocked ? 'block' : 'none';
