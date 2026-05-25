@@ -125,6 +125,7 @@ button:hover {
     width: 100%;
     padding: 16px 10px;
     text-align: center;
+    min-height: 60px;
 }
 
 /* Slot vuoto: placeholder invisibile per mantenere l'allineamento */
@@ -249,7 +250,7 @@ select {
     <div class="nav-bar">
         <div class="nav-slot empty"></div>
         <div class="nav-slot">
-            <button onclick="showPage('secondPage')">Rapporto<br>investigativo</button>
+            <button onclick="showPage('secondPage')">Rapporto investigativo</button>
         </div>
     </div>
 
@@ -320,13 +321,13 @@ select {
     <!-- Pagina 2: due pulsanti affiancati -->
     <div class="nav-bar">
         <div class="nav-slot">
-            <button onclick="showPage('firstPage')">Reperto<br>correlato</button>
+            <button onclick="showPage('firstPage')">Reperto correlato</button>
         </div>
         <div class="nav-slot">
             <button id="finalBtn"
                     class="disabled-btn"
                     onclick="showPage('thirdPage')">
-                Esito<br>rapporto
+                Esito rapporto
             </button>
         </div>
     </div>
