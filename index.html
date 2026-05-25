@@ -27,6 +27,27 @@ body {
     text-align: center;
 }
 
+.page {
+    display: none;
+    position: relative;
+}
+
+.page.active {
+    display: block;
+}
+
+#secondPage,
+#thirdPage {
+    text-align: left;
+    background: #161616;
+    border: 1px solid #333;
+    padding: 40px;
+    margin-top: 20px;
+    min-height: 60vh;
+}
+
+/* TESTI */
+
 .top-text {
     color: #7e7463;
     text-transform: uppercase;
@@ -64,6 +85,8 @@ body {
     display: block;
 }
 
+/* BOTTONI GENERALI */
+
 button {
     background: #1a1a1a;
     border: 1px solid #444;
@@ -80,21 +103,38 @@ button:hover {
     background: #262626;
 }
 
-.page {
-    display: none;
+/* BOTTONI NAV PAGINA */
+
+.page-btn {
+    position: absolute;
+    bottom: 25px;
+    min-width: 220px;
 }
 
-.page.active {
-    display: block;
+.bottom-right {
+    right: 25px;
 }
 
-#secondPage,
-#thirdPage {
-    text-align: left;
-    background: #161616;
-    border: 1px solid #333;
-    padding: 40px;
-    margin-top: 20px;
+.bottom-left {
+    left: 25px;
+}
+
+.disabled-btn {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* FORM */
+
+select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    background: #111;
+    color: #e7dcc3;
+    border: 1px solid #444;
 }
 
 .archive-title {
@@ -112,37 +152,6 @@ button:hover {
     font-size: 14px;
 }
 
-select {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    background: #111;
-    color: #e7dcc3;
-    border: 1px solid #444;
-}
-
-.nav-bar {
-    width: 100%;
-    max-width: 1000px;
-    margin: 0 auto 20px auto;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-}
-
-.nav-btn {
-    flex: 1;
-    min-width: 180px;
-}
-
-.active-nav {
-    background: #3a3328 !important;
-    border-color: #8d7c61 !important;
-    box-shadow: 0 0 10px rgba(216,204,176,0.3);
-}
-
 .lock-msg {
     opacity: 0.5;
     text-align: center;
@@ -154,54 +163,34 @@ select {
     display: block;
 }
 
-@media (max-width: 700px) {
+/* LANDING */
 
-    body {
-        padding: 10px;
-    }
+.container {
+    width: 100%;
+    max-width: 1000px;
+    text-align: center;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 700px) {
 
     .landing-title {
         font-size: 34px;
-        letter-spacing: 3px;
-    }
-
-    .landing-subtitle {
-        font-size: 11px;
-        letter-spacing: 2px;
-    }
-
-    .archive-title {
-        font-size: 28px;
-    }
-
-    #secondPage,
-    #thirdPage {
-        padding: 20px;
-    }
-
-    .nav-bar {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .nav-btn {
-        width: 100%;
-        min-width: unset;
-        font-size: 12px;
-        padding: 14px;
     }
 
     button {
-        width: 100%;
-        max-width: 320px;
-        padding: 14px 20px;
+        width: auto;
         font-size: 12px;
+        padding: 12px 20px;
         letter-spacing: 2px;
     }
 
-    .top-text {
-        font-size: 10px;
-        letter-spacing: 2px;
+    .page-btn {
+        position: static;
+        display: block;
+        margin-top: 20px;
+        width: 100%;
     }
 }
 
@@ -212,7 +201,7 @@ select {
 
 <!-- LANDING -->
 
-<div id="landingPage" class="container active">
+<div id="landingPage" class="container">
 
     <div style="text-align:center; padding:80px 20px;">
 
@@ -236,248 +225,196 @@ select {
 
 <div class="container" id="archiveContainer" style="display:none;">
 
-    <!-- NAVBAR -->
+<!-- PAGINA 1 -->
 
-    <div class="nav-bar">
+<div id="firstPage" class="page active">
 
-        <button class="nav-btn active-nav"
-            onclick="showPage('firstPage', this)">
-            Reperto Correlato
-        </button>
+    <div class="top-text">
+        ARCHIVIO INVESTIGATIVO CENTRALE • ACCESSO CONSULTAZIONE RISERVATO
+    </div>
 
-        <button class="nav-btn"
-            onclick="showPage('secondPage', this)">
-            Rapporto Investigativo
-        </button>
+    <div class="article-box">
+        <img src="img/articolo76.png" alt="Articolo 1976">
+    </div>
 
-        <button class="nav-btn"
-            onclick="showPage('thirdPage', this)">
-            Esito Rapporto
-        </button>
+    <button class="page-btn bottom-right"
+            onclick="showPage('secondPage')">
+        Rapporto investigativo
+    </button>
+
+</div>
+
+<!-- PAGINA 2 -->
+
+<div id="secondPage" class="page">
+
+    <div class="archive-title">
+        Rapporto Investigativo
+    </div>
+
+    <div class="archive-subtitle">
+        compilazione dati mancanti del caso 76-08-LS
+    </div>
+
+    <label>Soggetto coinvolto</label>
+    <select id="who" onchange="saveState()">
+        <option value="">-- scegli --</option>
+        <option>Il parroco</option>
+        <option>Un operaio</option>
+        <option>Il capocantiere</option>
+        <option>Suor Agnese</option>
+        <option>Un testimone</option>
+    </select>
+
+    <label>Natura dell’evento</label>
+    <select id="what" onchange="saveState()">
+        <option value="">-- scegli --</option>
+        <option>Un crollo accidentale</option>
+        <option>La fuga di una suora</option>
+        <option>Insabbiamento di un incidente</option>
+        <option>Un furto nella parrocchia</option>
+        <option>Un errore durante i lavori</option>
+    </select>
+
+    <label>Luogo del fatto</label>
+    <select id="where" onchange="saveState()">
+        <option value="">-- scegli --</option>
+        <option>Sagrestia</option>
+        <option>Campanile</option>
+        <option>Seminterrato della parrocchia</option>
+        <option>Cortile interno</option>
+        <option>Archivio della chiesa</option>
+    </select>
+
+    <label>Data e orario</label>
+    <select id="when" onchange="saveState()">
+        <option value="">-- scegli --</option>
+        <option>Primavera 1975 - ore 18:00</option>
+        <option>2 agosto 1976 - ore 22:30</option>
+        <option>Inverno 1974 - ore 03:00</option>
+        <option>Autunno 1977 - ore 11:15</option>
+        <option>Estate 1976 - ore 07:45</option>
+    </select>
+
+    <label>Possibile movente</label>
+    <select id="why" onchange="saveState()">
+        <option value="">-- scegli --</option>
+        <option>Paura delle conseguenze</option>
+        <option>Vendetta personale</option>
+        <option>Fanatismo religioso</option>
+        <option>Errore di comunicazione</option>
+        <option>Proteggere la parrocchia</option>
+    </select>
+
+    <button class="page-btn bottom-left"
+            onclick="showPage('firstPage')">
+        Reperto correlato
+    </button>
+
+	<button id="finalBtn"
+			class="page-btn bottom-right disabled-btn"
+			onclick="showPage('thirdPage')"
+			style="display:none;">
+		Esito rapporto
+	</button>
+
+</div>
+
+<!-- PAGINA 3 -->
+
+<div id="thirdPage" class="page">
+
+    <div class="archive-title">
+        Esito Rapporto — Desecretato 2026
+    </div>
+
+    <div id="lockedMsg" class="lock-msg">
+
+        <h2>ACCESSO NEGATO</h2>
+
+        <p>Compilare il rapporto investigativo per procedere.</p>
 
     </div>
 
-    <!-- PAGINA 1 -->
-
-    <div id="firstPage" class="page active">
-
-        <div class="top-text">
-            ARCHIVIO INVESTIGATIVO CENTRALE • ACCESSO CONSULTAZIONE RISERVATO
-        </div>
-
-        <div class="article-box">
-            <img src="img/articolo76.png" alt="Articolo 1976">
-        </div>
-
+    <div id="unlockedContent" style="display:none;">
+        <img src="img/report26.png" alt="Esito Rapporto">
     </div>
 
-    <!-- PAGINA 2 -->
-
-    <div id="secondPage" class="page">
-
-        <div class="archive-title">
-            Rapporto Investigativo
-        </div>
-
-        <div class="archive-subtitle">
-            compilazione dati mancanti del caso 76-08-LS
-        </div>
-
-        <label>Soggetto coinvolto</label>
-        <select id="who" onchange="saveState()">
-            <option value="">-- scegli --</option>
-            <option>Il parroco</option>
-            <option>Un operaio</option>
-            <option>Il capocantiere</option>
-            <option>Suor Agnese</option>
-            <option>Un testimone</option>
-        </select>
-
-        <label>Natura dell’evento</label>
-        <select id="what" onchange="saveState()">
-            <option value="">-- scegli --</option>
-            <option>Un crollo accidentale</option>
-            <option>La fuga di una suora</option>
-            <option>Insabbiamento di un incidente</option>
-            <option>Un furto nella parrocchia</option>
-            <option>Un errore durante i lavori</option>
-        </select>
-
-        <label>Luogo del fatto</label>
-        <select id="where" onchange="saveState()">
-            <option value="">-- scegli --</option>
-            <option>Sagrestia</option>
-            <option>Campanile</option>
-            <option>Seminterrato della parrocchia</option>
-            <option>Cortile interno</option>
-            <option>Archivio della chiesa</option>
-        </select>
-
-        <label>Data e orario</label>
-        <select id="when" onchange="saveState()">
-            <option value="">-- scegli --</option>
-            <option>Primavera 1975 - ore 18:00</option>
-            <option>2 agosto 1976 - ore 22:30</option>
-            <option>Inverno 1974 - ore 03:00</option>
-            <option>Autunno 1977 - ore 11:15</option>
-            <option>Estate 1976 - ore 07:45</option>
-        </select>
-
-        <label>Possibile movente</label>
-        <select id="why" onchange="saveState()">
-            <option value="">-- scegli --</option>
-            <option>Paura delle conseguenze</option>
-            <option>Vendetta personale</option>
-            <option>Fanatismo religioso</option>
-            <option>Errore di comunicazione</option>
-            <option>Proteggere la parrocchia</option>
-        </select>
-
-    </div>
-
-    <!-- PAGINA 3 -->
-
-    <div id="thirdPage" class="page">
-
-        <div class="archive-title">
-            Esito Rapporto — Desecretato 2026
-        </div>
-
-        <div id="lockedMsg" class="lock-msg">
-
-            <h2>ACCESSO NEGATO</h2>
-
-            <p>
-                Dati investigativi incompleti.
-            </p>
-
-            <p>
-                Compilare il rapporto investigativo
-                per procedere con la desecretazione del fascicolo.
-            </p>
-
-        </div>
-
-        <div id="unlockedContent" style="display:none;">
-
-            <img src="img/report26.png"
-                 alt="Esito Rapporto desecretato">
-
-        </div>
-
-    </div>
+</div>
 
 </div>
 
 <script>
 
 const correct = {
-
     who: "Il capocantiere",
     what: "Insabbiamento di un incidente",
     where: "Seminterrato della parrocchia",
     when: "2 agosto 1976 - ore 22:30",
     why: "Paura delle conseguenze"
-
 };
 
-function showPage(page, btn = null) {
+function showPage(page) {
 
-    document.querySelectorAll('.page').forEach(p => {
-        p.classList.remove('active');
-    });
-
-    const target = document.getElementById(page);
-
-    if (target) {
-        target.classList.add('active');
-    }
-
-    document.querySelectorAll('.nav-btn').forEach(b => {
-        b.classList.remove('active-nav');
-    });
-
-    if (btn) {
-        btn.classList.add('active-nav');
-    }
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(page).classList.add('active');
 }
 
 function enterArchive() {
-
     document.getElementById('landingPage').style.display = 'none';
-
     document.getElementById('archiveContainer').style.display = 'block';
-
-    showPage(
-        'firstPage',
-        document.querySelector('.nav-btn')
-    );
+    showPage('firstPage');
 }
 
 function saveState() {
 
     const state = {
-
-        who: document.getElementById('who').value,
-        what: document.getElementById('what').value,
-        where: document.getElementById('where').value,
-        when: document.getElementById('when').value,
-        why: document.getElementById('why').value
-
+        who: who.value,
+        what: what.value,
+        where: where.value,
+        when: when.value,
+        why: why.value
     };
 
-    localStorage.setItem(
-        'game5w',
-        JSON.stringify(state)
-    );
-
-    checkUnlock();
-}
-
-function loadState() {
-
-    const saved = JSON.parse(
-        localStorage.getItem('game5w') || '{}'
-    );
-
-    Object.keys(saved).forEach(k => {
-
-        const el = document.getElementById(k);
-
-        if (el) {
-            el.value = saved[k];
-        }
-
-    });
-
+    localStorage.setItem('game5w', JSON.stringify(state));
     checkUnlock();
 }
 
 function checkUnlock() {
 
-    const state = JSON.parse(
-        localStorage.getItem('game5w') || '{}'
-    );
+    const state = JSON.parse(localStorage.getItem('game5w') || '{}');
 
     const unlocked = Object.keys(correct).every(
         k => state[k] === correct[k]
     );
 
-    if (unlocked) {
+    const btn = document.getElementById('finalBtn');
 
-        document.getElementById('lockedMsg').style.display = 'none';
+    const btn = document.getElementById('finalBtn');
 
-        document.getElementById('unlockedContent').style.display = 'block';
-    }
+	if (unlocked) {
+		btn.style.display = 'block';
+	} else {
+		btn.style.display = 'none';
+	}
+
+    document.getElementById('lockedMsg').style.display = unlocked ? 'none' : 'block';
+    document.getElementById('unlockedContent').style.display = unlocked ? 'block' : 'none';
 }
 
 window.addEventListener('DOMContentLoaded', () => {
 
-    document
-        .getElementById('enterArchiveBtn')
+    document.getElementById('enterArchiveBtn')
         .addEventListener('click', enterArchive);
 
-    loadState();
+    const saved = JSON.parse(localStorage.getItem('game5w') || '{}');
+
+    Object.keys(saved).forEach(k => {
+        const el = document.getElementById(k);
+        if (el) el.value = saved[k];
+    });
+
+    checkUnlock();
 });
 
 </script>
