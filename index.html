@@ -177,6 +177,89 @@ select {
     display: block;
 }
 
+/* REPORT TEXT REVEAL */
+
+#reportText {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 13px;
+    line-height: 1.85;
+    color: #c9bfa8;
+    white-space: pre-wrap;
+}
+
+.report-block {
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 1s ease, transform 1s ease;
+    margin-bottom: 12px;
+}
+
+.report-block.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.report-block.heading {
+    color: #d8ccb0;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 28px;
+    margin-bottom: 6px;
+    font-size: 12px;
+    border-bottom: 1px solid #2e2e2e;
+    padding-bottom: 6px;
+}
+
+.report-block.meta {
+    color: #7e7463;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.report-block.list-item {
+    padding-left: 20px;
+    color: #a89e8a;
+}
+
+.report-block.list-item::before {
+    content: "— ";
+    color: #5a5040;
+}
+
+.report-block.separator {
+    border-top: 1px solid #222;
+    margin: 20px 0;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+.report-block.separator.visible {
+    opacity: 1;
+}
+
+.report-header-block {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #2a2a2a;
+}
+
+.report-header-block .report-block {
+    display: block;
+}
+
+.stamp {
+    display: inline-block;
+    border: 2px solid #3a3020;
+    color: #5a4e38;
+    font-size: 10px;
+    letter-spacing: 3px;
+    padding: 6px 16px;
+    text-transform: uppercase;
+    margin-top: 30px;
+}
+
 /* RESPONSIVE */
 
 @media (max-width: 700px) {
@@ -351,7 +434,9 @@ select {
     </div>
 
     <div id="unlockedContent" style="display:none;">
-        <img src="img/report26.png" alt="Esito Rapporto">
+
+        <div id="reportText"></div>
+
     </div>
 
 </div>
@@ -374,6 +459,11 @@ function showPage(page) {
 
     if (page === 'secondPage') {
         checkUnlock();
+    }
+
+    if (page === 'thirdPage') {
+        reportAnimated = false;
+        revealReport();
     }
 }
 
@@ -436,6 +526,110 @@ window.addEventListener('DOMContentLoaded', () => {
 
     checkUnlock();
 });
+
+</script>
+
+<script>
+
+let reportBlocks;
+
+function buildReportBlocks() {
+    const oggi = new Date();
+    const mesiIT = ["gennaio","febbraio","marzo","aprile","maggio","giugno",
+                    "luglio","agosto","settembre","ottobre","novembre","dicembre"];
+    const dataOggi = `Foggia, ${oggi.getDate()} ${mesiIT[oggi.getMonth()]} ${oggi.getFullYear()}`;
+
+    reportBlocks = [
+    { type: "heading", text: "Gruppo Issimi — Parrocchia di San Nicola" },
+    { type: "heading", text: "Rapporto Conclusivo di Indagine" },
+    { type: "meta", text: "Procedimento n. 2147/26 — \"Caso Lorusso\"" },
+    { type: "separator" },
+    { type: "heading", text: "Oggetto" },
+    { type: "text", text: "Risoluzione del caso relativo alla scomparsa della religiosa:" },
+    { type: "text", text: "CELESTE LORUSSO\nnata a Conversano (BA) il 12/03/1950\nscomparsa in data presumibile compresa tra il 1° e il 2 agosto 1976\npresso la Parrocchia Stella Maris di Marina di Lesina (FG)." },
+    { type: "separator" },
+    { type: "heading", text: "Premessa" },
+    { type: "text", text: "In data 18 luglio 2026, durante lavori di consolidamento dei locali seminterrati della Parrocchia Stella Maris di Marina di Lesina, operai incaricati della ristrutturazione segnalavano il rinvenimento accidentale di una cavità muraria occultata dietro una parete in laterizio di vecchia costruzione." },
+    { type: "text", text: "All'interno della cavità venivano rinvenuti:" },
+    { type: "list-item", text: "resti umani parzialmente scheletrizzati" },
+    { type: "list-item", text: "frammenti di abiti religiosi" },
+    { type: "list-item", text: "effetti personali riconducibili alla religiosa Celeste Lorusso, scomparsa nel 1976" },
+    { type: "text", text: "Il rinvenimento determinava la riapertura del procedimento relativo alla storica scomparsa." },
+    { type: "separator" },
+    { type: "heading", text: "Esiti delle Indagini" },
+    { type: "text", text: "Le successive attività investigative, svolte dal Gruppo Issimi della Parrocchia di San Nicola, consentivano di ricostruire quanto segue." },
+    { type: "text", text: "Nel periodo estivo del 1976 erano in corso lavori non autorizzati di ampliamento e consolidamento dei locali inferiori della struttura parrocchiale. Tali lavori risultavano coordinati informalmente dal capocantiere:" },
+    { type: "text", text: "COSIMO LAMACCHIA\nnato a Lesina (FG) il 08/11/1938\ndeceduto nel 2009." },
+    { type: "text", text: "Secondo le testimonianze raccolte e la documentazione recuperata, nella serata del 1° agosto 1976, intorno alle ore 22:30, la religiosa Celeste Lorusso si recava nei locali sotterranei della parrocchia per visionare il lavoro svolto dagli operai, in particolare ad un'intercapedine muraria nel sotterraneo." },
+    { type: "text", text: "Le attività investigative hanno consentito di accertare che la religiosa, per cause ritenute accidentali, rimaneva intrappolata all'interno dell'intercapedine. La parete interessata veniva ultimata e sigillata durante la mattina successiva, senza che gli operai presenti avessero inizialmente compreso l'effettiva presenza della donna all'interno della cavità." },
+    { type: "text", text: "Elementi testimoniali acquisiti nel corso delle indagini indicano che, nelle ore successive alla chiusura della parete, alcuni operai avrebbero udito colpi e rumori provenire dall'intercapedine appena realizzata. Tali segnalazioni non venivano tuttavia approfondite, essendo inizialmente attribuite a fenomeni di assestamento strutturale o a suggestione." },
+    { type: "separator" },
+    { type: "heading", text: "Insabbiamento" },
+    { type: "text", text: "Le indagini hanno evidenziato che il capocantiere Cosimo Lamacchia, dopo una settimana, a seguito delle voci messe in circolo dagli operai presenti e del personale rinvenimento di un rosario riconducibile alla religiosa nei pressi della parete appena ultimata, avrebbe compreso la possibile presenza della donna all'interno dell'intercapedine muraria." },
+    { type: "text", text: "Temendo conseguenze penali derivanti dall'irregolarità dei lavori e dalle condizioni di sicurezza del cantiere, oltre che dal probabile femminicidio, Lamacchia decideva tuttavia di non procedere alla demolizione della parete né di informare immediatamente le autorità." },
+    { type: "text", text: "Non sono emersi elementi idonei a dimostrare il coinvolgimento diretto del parroco dell'epoca, Don Ernesto Capuano, né di altri appartenenti alla struttura ecclesiastica." },
+    { type: "separator" },
+    { type: "heading", text: "Accertamenti Tecnici" },
+    { type: "text", text: "Gli esami antropologici e forensi eseguiti presso il RIS di Roma hanno confermato la compatibilità dei resti con Celeste Lorusso attraverso:" },
+    { type: "list-item", text: "analisi genetiche comparative" },
+    { type: "list-item", text: "reperti personali" },
+    { type: "list-item", text: "corrispondenza anagrafica" },
+    { type: "text", text: "La configurazione della cavità muraria e la posizione dei resti risultano coerenti con una permanenza forzata, seppur accidentale, all'interno dell'intercapedine al momento della chiusura della parete." },
+    { type: "separator" },
+    { type: "heading", text: "Conclusioni" },
+    { type: "text", text: "Alla luce degli elementi raccolti, si ritiene che:" },
+    { type: "list-item", text: "la morte di Celeste Lorusso sia avvenuta in conseguenza di un evento accidentale verificatosi durante lavori edilizi irregolari" },
+    { type: "list-item", text: "la successiva mancata segnalazione dell'accaduto abbia determinato l'occultamento del corpo per circa cinquant'anni" },
+    { type: "list-item", text: "il principale responsabile dell'insabbiamento debba individuarsi nel capocantiere Cosimo Lamacchia, deceduto prima della riapertura delle indagini" },
+    { type: "text", text: "Con il presente rapporto si propone l'archiviazione definitiva del procedimento per intervenuto decesso dell'unico soggetto ritenuto penalmente responsabile." },
+    { type: "separator" },
+    { type: "meta", text: dataOggi },
+    { type: "meta", text: "Gruppo Issimi della Parrocchia di San Nicola" },
+    { type: "stamp", text: "✦  ARCHIVIATO  ✦" },
+];
+}
+
+let reportAnimated = false;
+
+function buildReportDOM() {
+    const container = document.getElementById('reportText');
+    container.innerHTML = '';
+    reportBlocks.forEach((block, i) => {
+        if (block.type === 'separator') {
+            const hr = document.createElement('hr');
+            hr.className = 'report-block separator';
+            hr.dataset.index = i;
+            container.appendChild(hr);
+        } else if (block.type === 'stamp') {
+            const div = document.createElement('div');
+            div.className = 'report-block stamp';
+            div.dataset.index = i;
+            div.textContent = block.text;
+            container.appendChild(div);
+        } else {
+            const div = document.createElement('div');
+            div.className = 'report-block ' + block.type;
+            div.dataset.index = i;
+            div.textContent = block.text;
+            container.appendChild(div);
+        }
+    });
+}
+
+function revealReport() {
+    if (reportAnimated) return;
+    reportAnimated = true;
+
+    buildReportBlocks();
+    buildReportDOM();
+
+    const blocks = document.querySelectorAll('.report-block');
+    blocks.forEach((el, i) => {
+        setTimeout(() => {
+            el.classList.add('visible');
+        }, 400 * i);
+    });
+}
 
 </script>
 
